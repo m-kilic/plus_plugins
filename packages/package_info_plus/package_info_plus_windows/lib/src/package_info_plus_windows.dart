@@ -22,7 +22,11 @@ class PackageInfoWindows extends PackageInfoPlatform {
   /// appName, packageName, version, buildNumber
   @override
   Future<PackageInfoData> getAll() {
-    final info = _FileVersionInfo(Platform.resolvedExecutable);
+    var fileName = Platform.resolvedExecutable;
+    if(filePath.startsWith('UNC')) {
+      filePath = filePath.replaceFirst('UNC', '\\');
+    }
+    final info = _FileVersionInfo(fileName);
     final versions = info.productVersion!.split('+');
     final data = PackageInfoData(
       appName: info.productName ?? '',
